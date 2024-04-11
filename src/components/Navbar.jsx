@@ -26,7 +26,7 @@ const Navbar = () => {
       <nav className="bg-gray-800 p-4 w-full">
         <div className='flex flex-row'>
         <div className='grow'>
-          Logo 
+           Logo 
         </div>
         <div>
         <div className=" flex items-center justify-between w-full">
@@ -34,7 +34,7 @@ const Navbar = () => {
           <li>
             <button
               onClick={() => setCurrentPage('home')}
-              className="text-white hover:text-gray-300 transition duration-300"
+              className="text-white hover:text-gray-300 transition duration-300 mx-4"
             >
               Home
             </button>
@@ -42,7 +42,7 @@ const Navbar = () => {
             <li>
               <button
                 onClick={() => setCurrentPage('faq')}
-                className="text-white hover:text-gray-300 transition duration-300 ml-4"
+                className="text-white hover:text-gray-300 transition duration-300 mx-4"
               >
                 FAQ
               </button>
@@ -50,7 +50,7 @@ const Navbar = () => {
             <li>
               <button
                 onClick={() => setCurrentPage('aboutUs')}
-                className="text-white hover:text-gray-300 transition duration-300 ml-4"
+                className="text-white hover:text-gray-300 transition duration-300 mx-4"
               >
                 About Us
               </button>
@@ -58,7 +58,7 @@ const Navbar = () => {
             <li>
               <button
                 onClick={() => setCurrentPage('vehicleList')}
-                className="text-white hover:text-gray-300 transition duration-300 ml-4"
+                className="text-white hover:text-gray-300 transition duration-300 mx-4"
               >
                 Vehicle List
               </button>
