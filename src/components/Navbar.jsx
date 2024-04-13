@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <div >
-      <nav className="bg-gray-800 p-4 w-full">
+      <nav className="bg-gray-800 p-4 w-full sticky top-0">
         <div className='flex flex-row'>
         <div className='grow'>
            Logo 
