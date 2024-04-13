@@ -1,7 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import image1 from '../../images/agnieszka-stankiewicz-bkfBxbI7a1g-unsplash.jpg';
-import image2 from '../../images/alex-azabache-6gv2F4-Hpds-unsplash.jpg';
-import image3 from '../../images/amal-prasad-ztFkvmLKTcY-unsplash.jpg';
+import image1 from '../../images/img1.jpg';
+import image2 from '../../images/img2.jpg';
+import image3 from '../../images/img3.jpg';
+import car1 from '../../images/car-1.jpg';
+import car2 from '../../images/car-2.jpg';
+import car3 from '../../images/car-3.jpg';
+import car4 from '../../images/car-4.jpg';
+import car5 from '../../images/car-5.jpg';
+import car6 from '../../images/car-6.jpg';
+import car7 from '../../images/car-7.jpg';
+import car8 from '../../images/car-8.jpg';
+
+import van1 from '../../images/van-1.jpg';
+import van2 from '../../images/van-2.jpg';
+import van3 from '../../images/van-3.jpg';
+import van4 from '../../images/van-4.jpg';
+import van5 from '../../images/van-5.jpg';
+import van6 from '../../images/van-6.jpg';
+
+import bus1 from '../../images/bus-1.jpg';
+import bus2 from '../../images/bus-2.jpg';
+import bus3 from '../../images/bus-3.jpg';
+import bus4 from '../../images/bus-4.jpg';
+
+import lorry1 from '../../images/lorry-1.jpg';
+import lorry2 from '../../images/lorry-2.jpg';
+import lorry3 from '../../images/lorry-3.jpg';
+import lorry4 from '../../images/lorry-4.jpg';
+import lorry5 from '../../images/lorry-5.jpg';
+import lorry6 from '../../images/lorry-6.jpg';
+
+import truck1 from '../../images/truck-1.jpg';
+import truck2 from '../../images/truck-2.jpg';
 
 const VehicleCard = ({ image, title, description }) => (
   <div className="w-64 h-80 bg-white rounded-lg shadow-lg p-4 mx-4">
@@ -11,23 +41,31 @@ const VehicleCard = ({ image, title, description }) => (
   </div>
 );
 
-const VehicleCategory = ({ category, vehicles }) => (
-  <div className="mb-8 w-full">
-    <h2 className="text-2xl font-bold mb-4">{category}</h2>
-    <div className="flex overflow-x-auto space-x-4">
-      {vehicles.map((vehicle, index) => (
-        <VehicleCard key={index} {...vehicle} />
-      ))}
+
+const VehicleCategory = ({ category, vehicles }) => {
+  // Calculate the total width of all cards
+  const totalWidth = vehicles.length * 320; // Assuming each card has a fixed width of 320px
+
+  return (
+    <div className="mb-8">
+      <h2 className="text-2xl font-bold mb-4">{category}</h2>
+      <div className="flex overflow-x-auto space-x-4 p-4" style={{ maxWidth: totalWidth }}>
+        {vehicles.map((vehicle, index) => (
+          <div key={index} className="mr-4">
+            <VehicleCard {...vehicle} />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const LandingPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
-    { src: image1, text: 'Welcome to Our Vehicle Rental Service', position: { bottom: '10%', right: '10%' }  },
-    { src: image2, text: 'Rent a Car, Van, Bus, Lorry, or Truck for your journey!',  position: { bottom: '10%', right: '10%' } },
-    { src: image3, text: 'Book your vehicle now for an unforgettable experience!', position: { bottom: '10%', right: '10%' } },
+    { src: image1 },
+    { src: image2 },
+    { src: image3 },
   ];
 
   useEffect(() => {
@@ -46,11 +84,14 @@ const LandingPage = () => {
     {
       category: 'Cars',
       vehicles: [
-        { image: 'car1.jpg', title: 'Sedan', description: 'Comfortable and stylish.' },
-        { image: 'car2.jpg', title: 'SUV', description: 'Spacious and versatile.' },
-        { image: 'car3.jpg', title: 'Convertible', description: 'Enjoy the open road.' },
-        { image: 'car3.jpg', title: 'Convertible', description: 'Enjoy the open road.' },
-        { image: 'car3.jpg', title: 'Convertible', description: 'Enjoy the open road.' },
+        { image: car1 , title: 'Mini Car', description: '2 Seater' },
+        { image: car2, title: 'Sadan', description: '4 Seater' },
+        { image: car3, title: 'CUV', description: '6 Seater' },
+        { image: car4, title: 'SUV', description: '6 Seater' },
+        { image: car5, title: 'Hashback', description: '4 Seater' },
+        { image: car6, title: 'Convertible', description: '2 Seater' },
+        { image: car7, title: 'Coupe', description: '2 Seater' },
+        { image: car8, title: 'Super Car', description: '2 Seater' },
       
         
       ]
@@ -58,32 +99,42 @@ const LandingPage = () => {
     {
       category: 'Vans',
       vehicles: [
-        { image: 'van1.jpg', title: 'Minivan', description: 'Ideal for family trips.' },
-        { image: 'van2.jpg', title: 'Cargo Van', description: 'Perfect for transporting goods.' },
+        { image: van2, title: 'Mini Van', description: '6 Seater' },
+        { image: van1, title: 'Mini Cargo Van', description: '2 Seater' },
+        { image: van4, title: 'Bus Van', description: '12 Seater' },
+        { image: van5, title: 'Cargo Van', description: '2 Seater' },
+        { image: van3, title: 'Mini Picnic Van', description: '4 Seater' },
+        { image: van6, title: 'Big Picnic Van', description: '6 Seater' },
       ]
     },
 
     {
       category: 'Buses',
       vehicles: [
-        { image: 'van1.jpg', title: 'Minivan', description: 'Ideal for family trips.' },
-        { image: 'van2.jpg', title: 'Cargo Van', description: 'Perfect for transporting goods.' },
+        { image: bus4, title: 'Mini Bus', description: '12 Seater' },
+        { image: bus1, title: '2 Door Bus', description: '52 Seater' },
+        { image: bus2, title: 'City Bus', description: '35 Seater' },
+        { image: bus3, title: '2 store Bus', description: '45 Seater' },
       ]
     },
 
     {
       category: 'Lorries',
       vehicles: [
-        { image: 'van1.jpg', title: 'Minivan', description: 'Ideal for family trips.' },
-        { image: 'van2.jpg', title: 'Cargo Van', description: 'Perfect for transporting goods.' },
+        { image: lorry3, title: 'Minivan', description: '300Kg' },
+        { image: lorry2, title: 'Cargo Van', description: '500Kg' },
+        { image: lorry1, title: 'Cargo Van', description: '1000Kg - Uncovered' },
+        { image: lorry4, title: 'Cargo Van', description: '2000Kg - Covered' },
+        { image: lorry5, title: 'Cargo Van', description: '3000Kg - Covered' },
+        { image: lorry6, title: 'Cargo Van', description: '4000Kg - Covered' },
       ]
     },
 
     {
       category: 'Trucks',
       vehicles: [
-        { image: 'van1.jpg', title: 'Minivan', description: 'Ideal for family trips.' },
-        { image: 'van2.jpg', title: 'Cargo Van', description: 'Perfect for transporting goods.' },
+        { image: truck1, title: 'Truck', description: '7000Kg' },
+        { image: truck2, title: 'Big Truck', description: '9500Kg' },
       ]
     } 
 
@@ -91,38 +142,31 @@ const LandingPage = () => {
 
  
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col shadow-2xl">
       <div className="flex-1">
         <div className="relative ">
           <img 
             src={currentImage.src}
             alt="Slideshow"
-            className="w-full h-full object-cover bg-blend-multiply"
+            className="w-full h-full object-cover "
           />
-          <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-          <div className="absolute" style={currentImage.position}>
-            <div className="text-white text-4xl font-bold">
-              {currentImage.text}
-            </div>
-          </div>
         </div>
         <div className="container mx-auto p-4 mt-4">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Popular Vehicle Rentals</h2>
+          <h2 className="text-3xl font-bold mb-8">Popular Vehicle Rentals</h2>
           <div className="container mx-auto p-8">
-              <h1 className="text-3xl font-bold mb-8">Explore Our Vehicles</h1>
-               {categories.map((category, index) => (
-                    <VehicleCategory key={index} {...category} />
-                ))}
+            {categories.map((category, index) => (
+              <VehicleCategory key={index} {...category} />
+            ))}
           </div>
         </div>
-      </div>
+        </div>
 
       <div className="container mx-auto p-4 mt-4  mb-4">
         <div>
-          <div>
-            <h1 className="text-3xl font-bold mb-8">Make your hair with us</h1>
-            <div className="text-sm text-gray-600">You can heir your choice vehicle finish your journey with our beliverbale drivers.</div>
-            <button>Discover</button>
+          <div className=' bg-red-600 rounded-lg shadow-lg p-4'>
+            <h1 className="text-3xl font-bold mb-8 text-white">Make your hair with us</h1>
+            <div className="text-sm text-white font-bold">You can heir your choice vehicle finish your journey with our beliverbale drivers.</div>
+            <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'>Discover</button>
           </div>
           <div>
             <img></img>
@@ -132,10 +176,10 @@ const LandingPage = () => {
 
       <div className="container mx-auto p-4 mt-4  mb-4">
         <div>
-          <div>
-            <h1 className="text-3xl font-bold mb-8">Take your rental vehicle with us</h1>
-            <div className="text-sm text-gray-600">You can rental your choice vehicle finish your bisness with our officila contancts.</div>
-            <button>Discover</button>
+          <div className=' bg-red-600 rounded-lg shadow-lg p-4 mb-6'>
+            <h1 className="text-3xl font-bold mb-8 text-white" >Take your rental vehicle with us</h1>
+            <div className="text-sm text-white font-bold" >You can rental your choice vehicle finish your bisness with our officila contancts.</div>
+            <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'>Discover</button>
           </div>
           <div>
             <img></img>
