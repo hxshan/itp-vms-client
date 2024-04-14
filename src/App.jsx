@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
         <Navbar /> 
-        <Footer />  
+        <Footer /> 
     </Router>
   );
 }
