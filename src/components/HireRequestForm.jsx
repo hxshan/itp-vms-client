@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2'
 
 function HireRequestForm() {
   const [formData, setFormData] = useState({
@@ -62,7 +63,11 @@ function HireRequestForm() {
     emailjs.send(serviceId, templateId, emailData, publicKey)
         .then((response) => {
             console.log("Email Sent SuccessFully")
-            alert('Your request has been submitted successfully!')
+            Swal.fire({
+              icon: "success",
+              title: "Your request has been submitted successfully!",
+              showConfirmButton: true
+          });
             setFormData({
                 startDate: '',
                 endDate: '',
@@ -84,10 +89,14 @@ function HireRequestForm() {
               formEmail.current.reset()
         })
         .catch((error) => {
-            console.error('Email sending failed:', error);
-            alert('There was an error submitting your request. Please try again later.');
+          Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "There was an error submitting your request. Please try again later",
           });
-    
+      });
+      
+            
     console.log(formData);
   };
 
