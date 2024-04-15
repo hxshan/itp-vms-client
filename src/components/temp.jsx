@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import car1 from '../../images/car-1.jpg';
 import car2 from '../../images/car-2.jpg';
 import car3 from '../../images/car-3.jpg';
@@ -41,7 +40,8 @@ const VehicleCard = ({ image, title, description }) => (
 
 
 const VehicleCategory = ({ category, vehicles }) => {
-  const totalWidth = vehicles.length * 320; 
+  // Calculate the total width of all cards
+  const totalWidth = vehicles.length * 320; // Assuming each card has a fixed width of 320px
 
   return (
     <div className="mb-8">
@@ -57,7 +57,7 @@ const VehicleCategory = ({ category, vehicles }) => {
   );
 };
 
-const VehicleList = () => {
+const LandingPage = () => {
 
   const categories = [
     {
@@ -119,16 +119,9 @@ const VehicleList = () => {
 
   ];
 
-  const navigate = useNavigate();
-
-  const handleButtonClick = () => {
-    navigate('/requesthire');
-  };
-
-
  
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col shadow-2xl" id='vehicleList'>
+    <div className="min-h-screen bg-gray-100 flex flex-col shadow-2xl">
       <div className="flex-1">
         
         <div className="container mx-auto p-4 mt-4">
@@ -146,11 +139,7 @@ const VehicleList = () => {
           <div className=' bg-red-600 rounded-lg shadow-lg p-4'>
             <h1 className="text-3xl font-bold mb-8 text-white">Make your hair with us</h1>
             <div className="text-sm text-white font-bold">You can heir your choice vehicle finish your journey with our beliverbale drivers.</div>
-            <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'
-            onClick={handleButtonClick}
-            >
-              Discover
-            </button>
+            <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'>Discover</button>
           </div>
           <div>
             <img></img>
@@ -170,9 +159,11 @@ const VehicleList = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       
     </div>
   );
 }
 
-export default VehicleList;
+export default LandingPage;

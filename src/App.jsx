@@ -9,11 +9,14 @@ function App() {
   return (
     <Router>
         <Navbar /> 
-        <Footer /> 
+        
 
         <Routes>
+          <Route path="/" element={<LandingPage />}/>
           <Route path="/requesthire" element={<HireRequestForm />}/>
         </Routes>
+
+        <Footer /> 
     </Router>
   );
 }
