@@ -1,69 +1,41 @@
-import React , { useState } from 'react'
-import LandingPage from '../pages/LandingPage';
-import FAQ from './FAQ';
-import VehicleList from './VehiceList';
-import AboutUs from './AboutUs';
-
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  const [currentPage, setCurrentPage] = useState('home');
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'faq':
-        return <FAQ />;
-      case 'aboutUs':
-        return <AboutUs />;
-      case 'vehicleList':
-        return <VehicleList />;
-      default:
-        return <LandingPage />;
-    }
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate('/');
   };
 
   return (
-    <div >
-      <nav className="bg-slate-900 p-4 w-full sticky top-0 ">
+    <div className='fixed top-0 left-0 w-full z-50'>
+      <nav className="bg-slate-900 p-4 w-full sticky top-1 ">
         <div className='flex flex-row'>
         <div className='grow'>
            Logo 
         </div>
         <div>
         <div className=" flex items-center justify-between w-full">
-          <ul className="hidden md:flex">
-          <li>
-            <button
-              onClick={() => setCurrentPage('home')}
-              className="text-white hover:text-gray-300 transition duration-300 mx-4"
-            >
-              Home
-            </button>
-          </li>
-            <li>
-              <button
-                onClick={() => setCurrentPage('faq')}
-                className="text-white hover:text-gray-300 transition duration-300 mx-4"
-              >
-                FAQ
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setCurrentPage('aboutUs')}
-                className="text-white hover:text-gray-300 transition duration-300 mx-4"
-              >
-                About Us
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => setCurrentPage('vehicleList')}
-                className="text-white hover:text-gray-300 transition duration-300 mx-4"
-              >
-                Vehicle List
-              </button>
-            </li>
-          </ul>
+            <ul className="hidden md:flex space-x-4 text-white">
+              <li>
+                <button 
+                  className="hover:text-gray-300 transition duration-300"
+                  onClick={handleHomeClick}
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <a href="#aboutUs" className="hover:text-gray-300 transition duration-300">About Us</a>
+              </li>
+              <li>
+                <a href="#vehicleList" className="hover:text-gray-300 transition duration-300">Vehicle List</a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-gray-300 transition duration-300">FAQ</a>
+              </li>
+            </ul>
           <button className="md:hidden text-white hover:text-gray-300 transition duration-300">
             Menu
           </button>
@@ -72,7 +44,6 @@ const Navbar = () => {
         </div>  
       </nav>
 
-      {renderPage()}
     </div>
 )
 }
