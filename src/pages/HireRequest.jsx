@@ -142,6 +142,7 @@ const HireRequest = () => {
   
   useEffect(() => {
     fetchVehicles();
+    fetchVehicleRates();
   }, []);
 
 
@@ -189,7 +190,99 @@ const HireRequest = () => {
       console.error(error);
     }
   }
+
+  //Fare Calculation
+  //Fetch Rates
+  const [vehicleRates, setVehicleRates] = useState([])
+
+  const fetchVehicleRates = async (retries = 3) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/hire/rates', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
   
+      if (response.ok) {
+        const data = await response.json();
+        setVehicleRates(data);
+        console.log('vehicleRates', data);
+      } else {
+        console.error('Error fetching vehicle details:', response.status);
+        if (retries > 0) {
+          setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      if (retries > 0) {
+        setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+      }
+    }
+  };
+
+  //Calculate Estimated Fare
+  const calculateEstimatedFare = async () => {
+    try {
+        if (!vehicleType || !estimatedDistance) {
+            console.log("Vehicle type or estimatedDistance not selected");
+            return { estimatedFare: 0, advancedPay: 0 };
+        }
+        
+        console.log("Calculating estimated fare...");
+        
+        // Find the rate for the selected vehicle type
+        console.log("Selected Vehicle : " + vehicleType)
+        const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory.toLowerCase() === vehicleType.toLowerCase());
+        console.log(selectedVehicleRate)
+
+        if (!selectedVehicleRate) {
+            console.log("Rate not found for the selected vehicle type");
+            return { estimatedFare: 0, advancedPay: 0 };
+        }
+
+        const { baseDistence, baseRate, additionalRate,acBaseRate, acAdditionalRate } = selectedVehicleRate;
+        let estimatedFare = airCondition ? acBaseRate : baseRate
+        let advancedPay = 0;
+
+        let estimatedDistence = estimatedDistance;
+
+        if (tripType) {
+            estimatedDistence *= 2;
+        }
+
+        const baseDistance = baseDistence;
+        const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+
+        estimatedFare += additionalDistance * (airCondition ? acAdditionalRate : additionalRate);
+        advancedPay = estimatedFare * 0.1;
+
+        estimatedFare = parseFloat(estimatedFare.toFixed(2));
+        advancedPay = Math.round(advancedPay);
+
+        console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
+        console.log("Estimated Fare : " + estimatedFare)
+        console.log("Advanced Payment: " + advancedPay)
+        console.log("Base estimatedDistance : " +  baseDistance)
+
+        return { estimatedFare, advancedPay, additionalRate, estimatedDistence };
+    } catch (error) {
+        console.error('Error calculating estimated fare:', error);
+        return { estimatedFare: 0, advancedPay: 0 };
+    }
+  };
+
+  useEffect(() => {
+    if (step === 5) {
+      const calculateFare = async () => {
+        const { estimatedFare, advancedPay } = await calculateEstimatedFare();
+        setEstimatedTotal(estimatedFare);
+        setAdvancedPayment(advancedPay);
+      };
+      calculateFare();
+    }
+  }, [step, vehicleType, estimatedDistance, tripType, airCondition]);
 
   //Handle Form Steps
   const handleNextStep = (e) => {
@@ -514,7 +607,7 @@ const HireRequest = () => {
 
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. </p>
+                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. {}</p>
                   <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp;Rs. {advancedPayment}</p>
 
                 </div>
