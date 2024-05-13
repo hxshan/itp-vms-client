@@ -6,19 +6,21 @@ import Footer from './components/Footer';
 import HireRequestForm from "./pages/HireRequest";
 import LoginRegister from './pages/LoginRegister'
 
+
 function App() {
   return (
     <Router>
+
         <Navbar/> 
-        
 
         <Routes >
           <Route path="/" element={<LandingPage />}/>
           <Route path="/requesthire" element={<HireRequestForm />}/>
+          <Route path="/clientDash" element={<ClientDashboard/>} />
           <Route path="/login" element={<LoginRegister />}/>
         </Routes>
 
-        <Footer /> 
+        
     </Router>
   );
 }
