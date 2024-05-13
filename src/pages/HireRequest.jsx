@@ -3,6 +3,7 @@ import {validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage} 
 
 import { useEffect, useState } from 'react';
 import {useNavigate} from "react-router-dom";
+import axios from 'axios';
 
 import Swal from 'sweetalert2';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,7 +14,7 @@ const HireRequest = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [vehicleType, setVehicleType] = useState('');
-  const [passengerCount, setPassengerCount] = useState(1);
+  const [passengerCount, setPassengerCount] = useState(0);
   const [airCondition, setAirCondition] = useState(false);
   const [vehicle, setVehicle] = useState('')
   const [driver, setDriver] = useState('')
@@ -57,8 +58,6 @@ const HireRequest = () => {
     driverName
   }
 
-  
-
   //Get Vehicles
   const [vehicleData, setVehicleData] = useState([])
 
@@ -92,7 +91,7 @@ const HireRequest = () => {
   //Filter Vehicles
   const [filteredVehicles , setFilteredVehicles] = useState([])
 
-  const filterVehicles = () => {
+  const filterVehicles = async() => {
     console.log("Filter Vehicles");
     console.log("Selected Vehicle : " + vehicleType);
     const selectedVehicles = vehicleData.filter(vehicle => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
@@ -114,7 +113,25 @@ const HireRequest = () => {
     if (filteredVehicles.length === 0) {
       console.log("No vehicles Available");
       toast.error("No vehicles Available");
+  }else {
 
+    console.log('handleSelectedVehicle called');
+  
+    if (filteredVehicles.length > 0) {
+      console.log('inside if');
+      const randomIndex = Math.floor(Math.random() * filteredVehicles.length);
+      const randomVehicle = filteredVehicles[randomIndex];
+  
+      setVehicle(randomVehicle._id);
+      setVehicleNo(randomVehicle.vehicleRegister);
+
+      console.log('Vehicle No : ' , vehicleNo)
+      
+    } else {
+      console.log('inside else');
+      setVehicle('');
+      setVehicleNo('');
+    }
   }
   };
 
@@ -122,19 +139,208 @@ const HireRequest = () => {
     console.log('filteredVehicles updated:', filteredVehicles);
   }, [filteredVehicles]);
 
+  
   useEffect(() => {
     fetchVehicles();
+    fetchVehicleRates();
+    fetchDrivers()
   }, []);
+
+
+  //Get Drivers
+  const [driverData, setDriverData] = useState([])
+
+  const fetchDrivers = async (retries = 3) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/drivers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setDriverData(data);
+        console.log('Driver Data', data);
+      } else {
+        console.error('Error fetching vehicle details:', response.status);
+        if (retries > 0) {
+          setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      if (retries > 0) {
+        setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+      }
+    }
+  };
+
+  //Assign driver
+  const assignDriver = () => {
+
+    if (driverData.length > 0) {
+      const randomIndex = Math.floor(Math.random() * driverData.length);
+      const randomDriver = driverData[randomIndex];
+  
+      setDriver(randomDriver._id);
+      setDriverName(randomDriver.firstName);
+
+      console.log("DriverName" , randomDriver.firstName)
+      
+    } else {
+      setDriver('');
+      setDriverName('');
+    }
+  }
+
+  //Fare Calculation
+  //Calculate Distence
+  const calculateDistence = async() => {
+    if (!startPointCity || !endPoint) {
+      console.error('Start point city or end point is not set.');
+      return;
+    }
+
+    const startCity = startPointCity
+    const endCity = endPoint
+
+
+    const options = {
+      method: 'POST',
+      url: 'https://distanceto.p.rapidapi.com/distance/route',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '465b76b003msh9a1a7889f79a491p156653jsn80a4488b0093',
+        'X-RapidAPI-Host': 'distanceto.p.rapidapi.com'
+      },
+      data: {
+        route: [
+          {
+            country: 'SriLanka',
+            name: startCity
+          },
+          {
+            country: 'SriLanka',
+            name: endCity
+          }
+        ]
+      }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+      const distance = response.data.route.car.distance
+      setEstimatedDistance(Math.round(distance))
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //Fetch Rates
+  const [vehicleRates, setVehicleRates] = useState([])
+
+  const fetchVehicleRates = async (retries = 3) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/hire/rates', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setVehicleRates(data);
+        console.log('vehicleRates', data);
+      } else {
+        console.error('Error fetching vehicle details:', response.status);
+        if (retries > 0) {
+          setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      if (retries > 0) {
+        setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+      }
+    }
+  };
+
+  //Calculate Estimated Fare
+  const calculateEstimatedFare = async () => {
+    try {
+        if (!vehicleType || !estimatedDistance) {
+            console.log("Vehicle type or estimatedDistance not selected");
+            return { estimatedFare: 0, advancedPay: 0 };
+        }
+        
+        console.log("Calculating estimated fare...");
+        
+        // Find the rate for the selected vehicle type
+        console.log("Selected Vehicle : " + vehicleType)
+        const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory.toLowerCase() === vehicleType.toLowerCase());
+        console.log(selectedVehicleRate)
+
+        if (!selectedVehicleRate) {
+            console.log("Rate not found for the selected vehicle type");
+            return { estimatedFare: 0, advancedPay: 0 };
+        }
+
+        const { baseDistence, baseRate, additionalRate,acBaseRate, acAdditionalRate } = selectedVehicleRate;
+        let estimatedFare = airCondition ? acBaseRate : baseRate
+        let advancedPay = 0;
+
+        let estimatedDistence = estimatedDistance;
+
+        if (tripType) {
+            estimatedDistence *= 2;
+        }
+
+        const baseDistance = baseDistence;
+        const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+
+        estimatedFare += additionalDistance * (airCondition ? acAdditionalRate : additionalRate);
+        advancedPay = estimatedFare * 0.1;
+
+        estimatedFare = parseFloat(estimatedFare.toFixed(2));
+        advancedPay = Math.round(advancedPay);
+
+        console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
+        console.log("Estimated Fare : " + estimatedFare)
+        console.log("Advanced Payment: " + advancedPay)
+        console.log("Base estimatedDistance : " +  baseDistance)
+
+        return { estimatedFare, advancedPay, additionalRate, estimatedDistence };
+    } catch (error) {
+        console.error('Error calculating estimated fare:', error);
+        return { estimatedFare: 0, advancedPay: 0 };
+    }
+  };
+
+  useEffect(() => {
+    if (step === 5) {
+      const calculateFare = async () => {
+        const { estimatedFare, advancedPay } = await calculateEstimatedFare();
+        setEstimatedTotal(estimatedFare);
+        setAdvancedPayment(advancedPay);
+      };
+      calculateFare();
+    }
+  }, [step, vehicleType, estimatedDistance, tripType, airCondition]);
 
   //Handle Form Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
+    filterVehicles()
+    assignDriver()
+
     let errors = {};
     if(step == 1) {
       errors = validateFormFirstPage(formData)
-
-      filterVehicles()  
       
       if(Object.keys(errors).length === 0 && filteredVehicles.length != 0) {
         
@@ -147,6 +353,7 @@ const HireRequest = () => {
 
     if(step == 2) {
       errors = validateFormSecondPage(formData)
+      calculateDistence()
       if(Object.keys(errors).length === 0) {
         setStep(step + 1);
       }
@@ -175,13 +382,16 @@ const HireRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    const requestData = { data: formData };
+  
+    console.log(requestData);
     try {
       const response = await fetch('http://localhost:3000/api/hire/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(requestData),
       });
   
       if (response.ok) {
@@ -193,10 +403,9 @@ const HireRequest = () => {
           text: 'Hire added successfully!',
           timer: 1500,
           showConfirmButton: false
-      }).then(() => {
+        }).then(() => {
           navigate('/');
-      });
-        
+        });
       } else {
         // Handle error
         console.error('Error submitting hire request');
@@ -345,13 +554,7 @@ const HireRequest = () => {
                     </label>
                     <input type="checkbox" id="tripType" name="tripType" checked={tripType} onChange={(e) => setTripType(e.target.checked)} className='' required />
                   </div>
-  
-                  <div className="mb-5">
-                    <label htmlFor="estimatedDistance" className="block font-medium text-black text-base mb-2">
-                      Estimated Distance
-                    </label>
-                    <input type="number" id="estimatedDistance" name="estimatedDistance" value={estimatedDistance} onChange={(e) => setEstimatedDistance(e.target.value)} placeholder='Estimate Distance' className='border-2 rounded border-black px-5 w-full' required />
-                  </div>
+
                 </div>
   
               </div>
@@ -420,7 +623,7 @@ const HireRequest = () => {
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
                   <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
-                  <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {estimatedDistance}</p>
+                  <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {estimatedDistance} Km</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {cusEmail}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {cusMobile}</p>
@@ -448,7 +651,7 @@ const HireRequest = () => {
 
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. </p>
+                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. {}</p>
                   <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp;Rs. {advancedPayment}</p>
 
                 </div>

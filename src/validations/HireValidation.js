@@ -14,12 +14,6 @@ const validateFormFirstPage = (FormData) => {
     const today = new Date()
     const startDate = new Date(FormData.startDate)
 
-    if (startDate < today) {
-        error.startDate = 'Please Enter Valid Start Date'
-        toast.error('Please Enter Valid Start Date')
-        return error
-    }
-
     if (FormData.endDate === '') {
         error.endDate = 'Please Enter StartDate'
         toast.error('Please Enter End Date')
@@ -64,11 +58,7 @@ const validateFormSecondPage = (FormData) => {
         toast.error('Please Select a vehicle')
         return error
     }
-    if (FormData.driver  === '') {
-        error.driver = 'Please Select a Driver'
-        toast.error('Please Select a Driver')
-        return error
-    }
+    
     if (FormData.startPoint  === '') {
         error.startPoint = 'Please Enter Start point'
         toast.error('Please Enter Start point')
@@ -84,20 +74,7 @@ const validateFormSecondPage = (FormData) => {
         error.startTime = 'Please Enter Start Time'
         toast.error('Please Enter Start Time')
         return error
-    }
-    
-    if (FormData.estimatedDistance  === '') {
-        error.estimatedDistance = 'Please Enter distance'
-        toast.error('Please Enter distance')
-        return error
-    }
-
-    if (FormData.estimatedDistance  <= 0) {
-        error.estimatedDistance = 'Please Enter valid estimatedDistance'
-        toast.error('Please Enter valid distance')
-        return error
-    }
-
+    }    
 
     return error
 }
