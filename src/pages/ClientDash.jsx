@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import ClientRenew from './ClientRenew';
 
 const ClientDash = () => {
 
@@ -11,6 +12,7 @@ const ClientDash = () => {
   const [EstimatedDays,setEstimatedDays] = useState('')
   const [countError,setError] = useState('')
   const [ContStatus,setContStatus] = useState('')
+  const [openRenew,setopenRenew] = useState(false)
 
 
   const [contractData, setContractData] = useState({
@@ -170,17 +172,8 @@ const ClientDash = () => {
         <h1 className=" text-[50px] font-bold ">Contract View</h1>
       </div>
       
-     
-      <div className="bg-[#D9D9D9] h-fit rounded-lg py-4 flex flex-col justify-evenly my-4 w-full">
-        <div className="flex w-full justify-between px-5 mb-5">
-        <button
-              className=" bg-yellow-600 px-5 py-2 rounded-xl w-[120px] "
-              onClick={()=>{navigate('/Contract/Dashbored')}}
-            >
-              Dashboard
-            </button>
-        <button className={`${contractData.Status === "Terminated"? "hidden" : "" } bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${contractData._id}`)}>Edit</button>
-        </div>
+     <div className='flex justify-center items-center w-full '>
+      <div className="bg-[#D9D9D9] h-fit rounded-lg py-4 flex flex-col justify-evenly my-4 w-fit px-10">
         <div className="flex justify-evenly">
         <div >
           <div className=" w-fit h-fit  pb-8 rounded-xl">
@@ -275,7 +268,7 @@ const ClientDash = () => {
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col ml-12">
         
           <div className="  w-fit h-fit  pb-8 rounded-xl">
             <div>
@@ -367,6 +360,39 @@ const ClientDash = () => {
             </div>
           </div>
         </div>
+        <div className="flex flex-col ml-12">
+        <div className=" w-fit h-fit  pb-8 rounded-xl">
+            <div>
+              <p className=" text-[25px] font-bold">Contract options</p>
+            </div>
+
+            <div className="flex w-[300px] justify-between mt-3">
+              <div className="flex flex-col gap-1">
+                <label>Renew contract</label>
+                <button className=" bg-blue-500 text-white px-5 py-2 rounded-xl w-[120px] font-bold " onClick={()=>{setopenRenew(!openRenew)}}>renew</button>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label>Terminate contract</label>
+                <button className=" bg-red-500 text-white px-5 py-2 rounded-xl w-[120px] font-bold ">terminate</button>
+              </div>
+              <ClientRenew Toggle={()=>{setopenRenew(!openRenew)}} isOpen={openRenew} contractData={contractData} clientData={clientData} countdown={countdown} countError={countError} EstimatedDays={EstimatedDays}/>
+              
+            </div>
+            <div className="flex w-[300px] justify-between mt-6">
+            <div className="flex flex-col gap-1">
+                <label>Contact</label>
+                <p>011 2934345</p>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label>contract Email</label>
+                <p>Clientcontract@gmail.com</p>
+              </div>
+              </div>
+          </div>
+        </div>
+      </div>
       </div>
       </div>
     </div>

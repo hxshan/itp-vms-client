@@ -5,6 +5,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HireRequestForm from "./pages/HireRequest";
 import LoginRegister from './pages/LoginRegister'
+import ClientDash from "./pages/ClientDash";
+import ClientLogin from "./pages/ClientLogin";
+
+
 
 
 function App() {
@@ -16,8 +20,9 @@ function App() {
         <Routes >
           <Route path="/" element={<LandingPage />}/>
           <Route path="/requesthire" element={<HireRequestForm />}/>
-          <Route path="/clientDash" element={<ClientDashboard/>} />
+          <Route path="/clientDash" element={<ClientDash/>} />
           <Route path="/login" element={<LoginRegister />}/>
+          <Route path="/clientLogin" element={<ClientLogin/>}/>
         </Routes>
 
         
