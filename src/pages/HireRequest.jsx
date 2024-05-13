@@ -143,11 +143,59 @@ const HireRequest = () => {
   useEffect(() => {
     fetchVehicles();
     fetchVehicleRates();
+    fetchDrivers()
   }, []);
 
 
   //Get Drivers
+  const [driverData, setDriverData] = useState([])
 
+  const fetchDrivers = async (retries = 3) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/drivers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setDriverData(data);
+        console.log('Driver Data', data);
+      } else {
+        console.error('Error fetching vehicle details:', response.status);
+        if (retries > 0) {
+          setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      if (retries > 0) {
+        setTimeout(() => fetchVehicles(retries - 1), 2000); // Retry after 2 seconds
+      }
+    }
+  };
+
+  //Assign driver
+  const assignDriver = () => {
+
+    if (driverData.length > 0) {
+      const randomIndex = Math.floor(Math.random() * driverData.length);
+      const randomDriver = driverData[randomIndex];
+  
+      setDriver(randomDriver._id);
+      setDriverName(randomDriver.firstName);
+
+      console.log("DriverName" , randomDriver.firstName)
+      
+    } else {
+      setDriver('');
+      setDriverName('');
+    }
+  }
+
+  //Fare Calculation
   //Calculate Distence
   const calculateDistence = async() => {
     if (!startPointCity || !endPoint) {
@@ -191,7 +239,6 @@ const HireRequest = () => {
     }
   }
 
-  //Fare Calculation
   //Fetch Rates
   const [vehicleRates, setVehicleRates] = useState([])
 
@@ -289,6 +336,7 @@ const HireRequest = () => {
     e.preventDefault()
 
     filterVehicles()
+    assignDriver()
 
     let errors = {};
     if(step == 1) {
@@ -334,13 +382,16 @@ const HireRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    const requestData = { data: formData };
+  
+    console.log(requestData);
     try {
       const response = await fetch('http://localhost:3000/api/hire/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(requestData),
       });
   
       if (response.ok) {
@@ -352,10 +403,9 @@ const HireRequest = () => {
           text: 'Hire added successfully!',
           timer: 1500,
           showConfirmButton: false
-      }).then(() => {
+        }).then(() => {
           navigate('/');
-      });
-        
+        });
       } else {
         // Handle error
         console.error('Error submitting hire request');
