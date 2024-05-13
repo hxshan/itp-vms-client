@@ -3,6 +3,7 @@ import {validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage} 
 
 import { useEffect, useState } from 'react';
 import {useNavigate} from "react-router-dom";
+import axios from 'axios';
 
 import Swal from 'sweetalert2';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,7 +14,7 @@ const HireRequest = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [vehicleType, setVehicleType] = useState('');
-  const [passengerCount, setPassengerCount] = useState(1);
+  const [passengerCount, setPassengerCount] = useState(0);
   const [airCondition, setAirCondition] = useState(false);
   const [vehicle, setVehicle] = useState('')
   const [driver, setDriver] = useState('')
@@ -57,8 +58,6 @@ const HireRequest = () => {
     driverName
   }
 
-  
-
   //Get Vehicles
   const [vehicleData, setVehicleData] = useState([])
 
@@ -92,7 +91,7 @@ const HireRequest = () => {
   //Filter Vehicles
   const [filteredVehicles , setFilteredVehicles] = useState([])
 
-  const filterVehicles = () => {
+  const filterVehicles = async() => {
     console.log("Filter Vehicles");
     console.log("Selected Vehicle : " + vehicleType);
     const selectedVehicles = vehicleData.filter(vehicle => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
@@ -114,7 +113,25 @@ const HireRequest = () => {
     if (filteredVehicles.length === 0) {
       console.log("No vehicles Available");
       toast.error("No vehicles Available");
+  }else {
 
+    console.log('handleSelectedVehicle called');
+  
+    if (filteredVehicles.length > 0) {
+      console.log('inside if');
+      const randomIndex = Math.floor(Math.random() * filteredVehicles.length);
+      const randomVehicle = filteredVehicles[randomIndex];
+  
+      setVehicle(randomVehicle._id);
+      setVehicleNo(randomVehicle.vehicleRegister);
+
+      console.log('Vehicle No : ' , vehicleNo)
+      
+    } else {
+      console.log('inside else');
+      setVehicle('');
+      setVehicleNo('');
+    }
   }
   };
 
@@ -122,19 +139,67 @@ const HireRequest = () => {
     console.log('filteredVehicles updated:', filteredVehicles);
   }, [filteredVehicles]);
 
+  
   useEffect(() => {
     fetchVehicles();
   }, []);
+
+
+  //Get Drivers
+
+  //Calculate Distence
+  const calculateDistence = async() => {
+    if (!startPointCity || !endPoint) {
+      console.error('Start point city or end point is not set.');
+      return;
+    }
+
+    const startCity = startPointCity
+    const endCity = endPoint
+
+
+    const options = {
+      method: 'POST',
+      url: 'https://distanceto.p.rapidapi.com/distance/route',
+      headers: {
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '465b76b003msh9a1a7889f79a491p156653jsn80a4488b0093',
+        'X-RapidAPI-Host': 'distanceto.p.rapidapi.com'
+      },
+      data: {
+        route: [
+          {
+            country: 'SriLanka',
+            name: startCity
+          },
+          {
+            country: 'SriLanka',
+            name: endCity
+          }
+        ]
+      }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+      const distance = response.data.route.car.distance
+      setEstimatedDistance(Math.round(distance))
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
 
   //Handle Form Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
+    filterVehicles()
+
     let errors = {};
     if(step == 1) {
       errors = validateFormFirstPage(formData)
-
-      filterVehicles()  
       
       if(Object.keys(errors).length === 0 && filteredVehicles.length != 0) {
         
@@ -147,6 +212,7 @@ const HireRequest = () => {
 
     if(step == 2) {
       errors = validateFormSecondPage(formData)
+      calculateDistence()
       if(Object.keys(errors).length === 0) {
         setStep(step + 1);
       }
@@ -420,7 +486,7 @@ const HireRequest = () => {
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
                   <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
-                  <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {estimatedDistance}</p>
+                  <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {estimatedDistance} Km</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {cusEmail}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {cusMobile}</p>
