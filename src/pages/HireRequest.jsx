@@ -554,13 +554,7 @@ const HireRequest = () => {
                     </label>
                     <input type="checkbox" id="tripType" name="tripType" checked={tripType} onChange={(e) => setTripType(e.target.checked)} className='' required />
                   </div>
-  
-                  <div className="mb-5">
-                    <label htmlFor="estimatedDistance" className="block font-medium text-black text-base mb-2">
-                      Estimated Distance
-                    </label>
-                    <input type="number" id="estimatedDistance" name="estimatedDistance" value={estimatedDistance} onChange={(e) => setEstimatedDistance(e.target.value)} placeholder='Estimate Distance' className='border-2 rounded border-black px-5 w-full' required />
-                  </div>
+
                 </div>
   
               </div>
