@@ -144,7 +144,7 @@ const VehicleList = () => {
       <div className="container mx-auto p-4 mt-4  mb-4">
         <div>
           <div className=' bg-red-600 rounded-lg shadow-lg p-4'>
-            <h1 className="text-3xl font-bold mb-8 text-white">Make your hair with us</h1>
+            <h1 className="text-3xl font-bold mb-8 text-white">Make your hire with us</h1>
             <div className="text-sm text-white font-bold">You can heir your choice vehicle finish your journey with our beliverbale drivers.</div>
             <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'
             onClick={handleButtonClick}
