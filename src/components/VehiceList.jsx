@@ -149,7 +149,7 @@ const VehicleList = () => {
             <button className='mt-6 px-4 py-2 bg-white rounded-lg shadow-lg text-black font-bold hover:bg-slate-200'
             onClick={handleButtonClick}
             >
-              Discover
+              Reserve Vehicle
             </button>
           </div>
           <div>
