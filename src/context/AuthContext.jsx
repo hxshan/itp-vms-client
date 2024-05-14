@@ -33,7 +33,7 @@ const isTokenExpired = (token)=>{
 }
 
 
-const navigate = useNavigate()
+//const navigate = useNavigate()
 const [loading, setLoading] = useState(true);
 
 useEffect(()=>{
@@ -45,7 +45,7 @@ useEffect(()=>{
     }else{
         localStorage.removeItem('user')
         dispatch({type:'LOGOUT'})
-        navigate('/login', { replace: true });
+        //navigate('/login', { replace: true });
     }
     setLoading(false)
 },[])
