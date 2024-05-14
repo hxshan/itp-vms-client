@@ -65,6 +65,7 @@ const LoginForm = ({ toggleForm , showForm}) => {
                 </button>
             </div>
 
+{/*}
             <div className="text-[14.5px] text-center mt-[20px] mb-[15px] mx-0  ">
                 <p>
                 Don&apos;t have an account?
@@ -77,7 +78,7 @@ const LoginForm = ({ toggleForm , showForm}) => {
                 </a>
                 </p>
             </div>
-
+  {*/}
         </form>
 
     </div>
