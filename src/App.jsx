@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter , Routes, Route } from "react-router-dom";
 import LandingPage from './pages/LandingPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,7 +13,8 @@ import ClientLogin from "./pages/ClientLogin";
 
 function App() {
   return (
-    <Router>
+    
+      <>
 
         <Navbar/> 
 
@@ -25,8 +26,9 @@ function App() {
           <Route path="/clientLogin" element={<ClientLogin/>}/>
         </Routes>
 
+      </>
         
-    </Router>
+    
   );
 }
 
