@@ -67,53 +67,40 @@ const VehicleList = () => {
         { image: car2, title: 'Sadan', description: '4 Seater' },
         { image: car3, title: 'CUV', description: '6 Seater' },
         { image: car4, title: 'SUV', description: '6 Seater' },
-        { image: car5, title: 'Hashback', description: '4 Seater' },
-        { image: car6, title: 'Convertible', description: '2 Seater' },
-        { image: car7, title: 'Coupe', description: '2 Seater' },
-        { image: car8, title: 'Super Car', description: '2 Seater' },
-      
-        
       ]
     },
     {
       category: 'Vans',
       vehicles: [
         { image: van2, title: 'Mini Van', description: '6 Seater' },
-        { image: van1, title: 'Mini Cargo Van', description: '2 Seater' },
-        { image: van4, title: 'Bus Van', description: '12 Seater' },
-        { image: van5, title: 'Cargo Van', description: '2 Seater' },
-        { image: van3, title: 'Mini Picnic Van', description: '4 Seater' },
-        { image: van6, title: 'Big Picnic Van', description: '6 Seater' },
+        { image: van1, title: 'Cargo Van', description: '2 Seater' },
+        { image: van4, title: 'Van', description: '12 Seater' },
+        { image: van5, title: 'Long Van', description: '2 Seater' },
       ]
     },
 
     {
       category: 'Buses',
       vehicles: [
-        { image: bus4, title: 'Mini Bus', description: '12 Seater' },
-        { image: bus1, title: '2 Door Bus', description: '52 Seater' },
-        { image: bus2, title: 'City Bus', description: '35 Seater' },
-        { image: bus3, title: '2 store Bus', description: '45 Seater' },
+        { image: bus4, title: 'Ac Mini Bus', description: '12 Seater' },
+        { image: bus1, title: 'Non-Ac Mini Bus', description: '52 Seater' },
+        { image: bus2, title: 'Non-Ac Bus', description: '35 Seater' },
+        { image: bus3, title: 'Ac Bus', description: '45 Seater' },
       ]
     },
 
     {
       category: 'Lorries',
       vehicles: [
-        { image: lorry3, title: 'Minivan', description: '300Kg' },
-        { image: lorry2, title: 'Cargo Van', description: '500Kg' },
-        { image: lorry1, title: 'Cargo Van', description: '1000Kg - Uncovered' },
-        { image: lorry4, title: 'Cargo Van', description: '2000Kg - Covered' },
-        { image: lorry5, title: 'Cargo Van', description: '3000Kg - Covered' },
-        { image: lorry6, title: 'Cargo Van', description: '4000Kg - Covered' },
+        { image: lorry1, title: 'Mini Lorry', description: '1000Kg' },
+        { image: lorry6, title: 'Lorry', description: '4000Kg' },
       ]
     },
 
     {
-      category: 'Trucks',
+      category: 'Prime Movers',
       vehicles: [
-        { image: truck1, title: 'Truck', description: '7000Kg' },
-        { image: truck2, title: 'Big Truck', description: '9500Kg' },
+        { image: truck1, title: 'Prime Mover', description: '9500Kg' },
       ]
     } 
 
