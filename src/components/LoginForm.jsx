@@ -8,11 +8,17 @@ import { useLogin } from '../hooks/useLogin';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import  {useAuthContext}  from '../hooks/useAuthContext';
+import LogError from '../pages/LogError';
+
+
 
 const LoginForm = ({ toggleForm , showForm}) => {
 
     const {user} = useAuthContext()
     const navigate = useNavigate()
+
+
+    const [openError,setOpenError] = useState(false)
 
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
@@ -35,10 +41,11 @@ const LoginForm = ({ toggleForm , showForm}) => {
 
     useEffect(()=>{
         if(user?.accessToken){
-            console.log(user.accessToken    )
             navigate(`/clientDash/${user?.id}`)
+        }else if(error){
+            alert(error)
         }
-    },[user])
+    },[user,error])
 
     const handleInput =(e)=>{
         const {name,value} = e.target
@@ -58,8 +65,10 @@ const LoginForm = ({ toggleForm , showForm}) => {
   return (
     //Login
     <div className={` w-[450px] min-h-[450px] h-fit transition-transform duration-500 transform mt-20 ml-20 bg-white border-2 ${showForm ? 'translate-x-0' : 'translate-x-full'} xl:bg-transparent xl:border-none` }>
+        <LogError isOpen={openError} Toggle={()=>{setOpenError(!openError)}}/>
         <form >
             <h1 className=" text-4xl text-center">Login</h1>
+            
 
             <div className="w-full h-[50px] my-[30px] mx-0 flex items-center border-2 pr-5">
                 <input

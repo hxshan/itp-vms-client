@@ -231,7 +231,16 @@ const calculateTimeDiff = (startDate, endDate) => {
   }
 }
 
-if(!data){
+useEffect(()=>{
+  if(clientID){
+    getContract()
+  }
+},[clientID])
+
+console.log(data)
+if (loading){
+  return (<div className='mt-[100px]'>loading.....</div>)
+}else if(!loading && !data){
  return(<div className='mt-[100px]'>No contract available</div>)
 }
   return (
@@ -532,6 +541,7 @@ if(!data){
       </div>
     </div>
   )
+
 }
 
 export default ClientDash
