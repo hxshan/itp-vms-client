@@ -21,7 +21,7 @@ function App() {
         <Routes >
           <Route path="/" element={<LandingPage />}/>
           <Route path="/requesthire" element={<HireRequestForm />}/>
-          <Route path="/clientDash" element={<ClientDash/>} />
+          <Route path="/clientDash/:id" element={<ClientDash/>} />
           <Route path="/login" element={<LoginRegister />}/>
           <Route path="/clientLogin" element={<ClientLogin/>}/>
         </Routes>
