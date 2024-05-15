@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAuthContext } from './useAuthContext'
-import axios from '@/api/axios'
+import {useAuthContext}  from './useAuthContext'
+import axios from '../api/axios'
 
 
 export const useLogin = () => {

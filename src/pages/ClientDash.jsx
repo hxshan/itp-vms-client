@@ -4,19 +4,24 @@ import useAxios from "../hooks/useAxios"
 import axios from '../api/axios';
 import ViewVehical from './ViewVehical';
 import ClientTerminate from './ClientTerminate';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useParams } from 'react-router-dom';
+
 
 
 
 
 const ClientDash = () => {
 
-  //const params = useParams();
+  const {user} = useAuthContext()
+
+  const params = useParams();
 
   //const navigate = useNavigate()
 
   //const contractID = params.id;
 
-  const clientID = "66425521f9ffcae68a1d75bb"
+  const clientID = params.id
 
   const [countdown, setCountdown] = useState(null);
   const [EstimatedDays,setEstimatedDays] = useState('')
@@ -109,7 +114,6 @@ const fetchRequest = () => {
 
 
  useEffect(() => {
-
 if (data) {
       setContractData({
         _id: data._id,
@@ -225,6 +229,19 @@ const calculateTimeDiff = (startDate, endDate) => {
       setCountdown(0);
     }
   }
+}
+
+useEffect(()=>{
+  if(clientID){
+    getContract()
+  }
+},[clientID])
+
+console.log(data)
+if (loading){
+  return (<div className='mt-[100px]'>loading.....</div>)
+}else if(!loading && !data){
+ return(<div className='mt-[100px]'>No contract available</div>)
 }
   return (
     <div>
@@ -524,6 +541,7 @@ const calculateTimeDiff = (startDate, endDate) => {
       </div>
     </div>
   )
+
 }
 
 export default ClientDash
