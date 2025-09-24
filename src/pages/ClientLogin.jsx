@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import bmw from '../../images/BMW_M5.png'
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import GoogleLoginButton from '@/components/GoogleLoginButton';
 
 
 const ClientLogin = () => {
@@ -74,6 +75,7 @@ const ClientLogin = () => {
             </div>
 
         </form>
+        <GoogleLoginButton />
 
     </div>
       </div>
