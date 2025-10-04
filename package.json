@@ -18,7 +18,7 @@
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.10.7",
-    "@tanstack/react-query": "^5.20.2",
+    "@tanstack/react-query": "^5.87.4",
     "jwt-decode": "^4.0.0"
 
   },
